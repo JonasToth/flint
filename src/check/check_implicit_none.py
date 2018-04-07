@@ -9,14 +9,11 @@ Fortran modules are not covered yet, because of nesting.
 import logging
 import re
 
-from abstract_check import AbstractCheck
+from check.abstract_check import AbstractCheck
+from common_matcher import match_line, match_begin_block, match_end_block
 from file_io import CodeFile
 from diagnostics import warning
 
-__regex_start_construct = re.compile(
-    r'[^!]*(function|subroutine|program|module)(.*)')
-__regex_end_construct = re.compile(
-    r'[^!]*end(\s+)(function|subroutine|program|module)(.*)')
 __regex_implicit = re.compile(r'[^!]*implicit(\s+)none(.*)')
 
 
@@ -29,37 +26,7 @@ def _match_implicit(line):
     :returns: True if the line contains a valid (not outcommented)
               'implicit none'.
     """
-    if __regex_implicit.match(line):
-        return True
-    return False
-
-
-def _match_end_construct(line):
-    """
-    Match with a regular expression, if the line contains a valid
-    ending of a functional construct for 'program', 'function', 'subroutine'
-    and 'module'.
-
-    :line: Arbitrary line of code.
-    :returns: True if the line contains a valid end construct.
-    """
-    if __regex_end_construct.match(line):
-        return True
-    return False
-
-
-def _match_start_construct(line):
-    """
-    Match with a regular expression, if the line contains a valid
-    beginning of a functional construct for 'program', 'function',
-    'subroutine' and 'module'.
-
-    :line: Arbitrary line of code.
-    :returns: True if the line contains a valid start construct.
-    """
-    if __regex_start_construct.match(line):
-        return True
-    return False
+    return match_line(__regex_implicit, line)
 
 
 class CheckImplicitNone(AbstractCheck):
@@ -95,7 +62,7 @@ class CheckImplicitNone(AbstractCheck):
             # Handle the code construct exit.
             # This must be done first, because the entry would trigger
             # given the string search.
-            if _match_end_construct(line):
+            if match_end_block(line):
                 self._log.debug("exiting construct")
                 self._log.debug(line)
 
@@ -107,7 +74,7 @@ class CheckImplicitNone(AbstractCheck):
             # Handle the code construct entry.
             # This is the last state change, because the coarse grain
             # string searching would trigger on 'end function' ...
-            if _match_start_construct(line):
+            if match_begin_block(line):
                 self._log.debug("entering construct")
                 self._log.debug(line)
 
