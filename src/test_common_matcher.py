@@ -18,12 +18,15 @@ class TestCheckCommonMatcher(unittest.TestCase):
         self.assertTrue(match_begin_block("  function alksjd"))
         self.assertTrue(match_begin_block("\tfunction ! bla "))
         self.assertTrue(match_begin_block(" \t function asdj  "))
+        self.assertTrue(match_begin_block(" pure \t function asdj  "))
+        self.assertTrue(match_begin_block(" pure function asdj  "))
 
         self.assertFalse(match_begin_block("!function"))
         self.assertFalse(match_begin_block("!  end   function"))
         self.assertFalse(match_begin_block("\t! \tfunction ! bla "))
         self.assertFalse(match_begin_block(" \t ! \t function ! kajlsd"))
         self.assertFalse(match_begin_block(" \t ! function commentary"))
+        self.assertFalse(match_begin_block(" \t ! pure function commentary"))
 
         self.assertTrue(match_begin_block("\tsubroutine"))
         self.assertTrue(match_begin_block("\t subroutine"))
