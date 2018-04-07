@@ -87,7 +87,7 @@ class TestCheckImplicitNone(unittest.TestCase):
 
     def test_simple(self):
         f_file = CodeFile(
-            join(dirname(__file__), "../test/checks/implicit_none_simple.f90"))
+            join(dirname(__file__), "../../test/check/implicit_none_simple.f90"))
         c = CheckImplicitNone(f_file)
         c.check()
 
@@ -95,7 +95,7 @@ class TestCheckImplicitNone(unittest.TestCase):
 
     def test_edgecase(self):
         f_file = CodeFile(
-            join(dirname(__file__), "../test/checks/implicit_none_edge.f90"))
+            join(dirname(__file__), "../../test/check/implicit_none_edge.f90"))
         c = CheckImplicitNone(f_file)
         c.check()
 
@@ -103,7 +103,7 @@ class TestCheckImplicitNone(unittest.TestCase):
 
     def test_real_world(self):
         f_file = CodeFile(
-            join(dirname(__file__), "../test/checks/implicit_none_real.f90"))
+            join(dirname(__file__), "../../test/check/implicit_none_real.f90"))
         c = CheckImplicitNone(f_file)
         c.check()
 
