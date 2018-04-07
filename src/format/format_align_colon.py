@@ -19,7 +19,8 @@ real(8)    :: some_real
 import logging
 import re
 
-from abstract_formatter import AbstractFormatter
+from format.abstract_formatter import AbstractFormatter
+from format.align import insert_whitespace, find_anchor
 from common_matcher import match_line, match_blank_line, match_commented_line
 from file_io import CodeFile
 
@@ -48,31 +49,16 @@ def _align_colons(lines):
     if len(lines) == 0:
         return []
 
-    formatted_lines = []
-    colon_position = []
-
-    for line in lines:
-        # Comments could contain '::' and might confuse the algorithm.
-        if _match_variable_colon(line):
-            colon_position.append(line.find("::"))
-        else:
-            colon_position.append(0)
+    colon_position = find_anchor(lines, "::", skip_regex=match_commented_line)
 
     # https://stackoverflow.com/questions/11530799/python-finding-index-of-maximum-in-list
     (max_colon, max_line) = max((v, i) for i, v in enumerate(colon_position))
 
+    formatted_lines = []
     for i, line in enumerate(lines):
         # Only actual variable definitions are reformated.
         if _match_variable_colon(line):
-            col_position = colon_position[i]
-
-            necessary_spaces = (max_colon - col_position)
-
-            # The line must be put together again with potentially
-            # added whitespace.
-            line = line[:col_position] +\
-                   " " * necessary_spaces +\
-                   line[col_position:]
+            line = insert_whitespace(line, colon_position[i], max_colon)
 
         formatted_lines.append(line)
 
