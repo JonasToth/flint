@@ -7,8 +7,8 @@ Executable that uses the implemented checks.
 import argparse
 import sys
 
-from check_implicit_none import CheckImplicitNone
-from format_align_colon import FormatAlignColon
+from check.check_implicit_none import CheckImplicitNone
+from format.format_align_colon import FormatAlignColon
 from file_io import CodeFile
 
 

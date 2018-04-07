@@ -9,8 +9,8 @@ from os.path import dirname, join
 import re
 import unittest
 from file_io import CodeFile
-from check_implicit_none import _match_implicit, _match_start_construct, \
-                                _match_end_construct, CheckImplicitNone
+from check.check_implicit_none import _match_implicit, _match_start_construct,\
+                                      _match_end_construct, CheckImplicitNone
 
 # logging.basicConfig(level=logging.DEBUG)
 

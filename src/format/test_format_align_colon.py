@@ -10,9 +10,9 @@ from os.path import dirname, join
 import unittest
 
 from file_io import CodeFile
-from format_align_colon import _match_blank_line, _match_comment_line,\
-                               _match_variable_colon, _align_colons,\
-                               FormatAlignColon
+from format.format_align_colon import _match_blank_line, _match_comment_line,\
+                                      _match_variable_colon, _align_colons,\
+                                      FormatAlignColon
 
 # logging.basicConfig(level=logging.DEBUG)
 
