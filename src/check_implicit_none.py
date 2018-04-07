@@ -8,6 +8,8 @@ Fortran modules are not covered yet, because of nesting.
 
 import logging
 import re
+
+from abstract_check import AbstractCheck
 from file_io import CodeFile
 from diagnostics import warning
 
@@ -60,15 +62,18 @@ def _match_start_construct(line):
     return False
 
 
-class CheckImplicitNone(object):
+class CheckImplicitNone(AbstractCheck):
     """Check if all code constructs contain `implicit none`."""
 
     def __init__(self, f_file: CodeFile):
-        self._f_file = f_file
+        super(CheckImplicitNone, self).__init__(f_file)
+
         # List of all code locations that do not define `implicit none`.
         self._occurences = []
-
         self._log = logging.getLogger(__file__ + "::implicit_none")
+
+    def help(self):
+        return "Warn if 'implicit none' is not used"
 
     def check(self):
         """
