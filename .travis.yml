@@ -8,7 +8,6 @@ python:
 
 os:
     - linux
-    - osx
 
 script:
     - python3 -m unittest discover -v -s src/ -p 'test_*.py'
