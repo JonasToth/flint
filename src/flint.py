@@ -21,11 +21,14 @@ def handle_analysis(args):
         "implicit-none": CheckImplicitNone,
     }
 
+    # If listing is wanted, only that will be done.
     if args.list:
         for name, class_ref in all_checks.items():
             print("{}: {}".format(name, class_ref.help()))
             return
 
+    # Reaching this point means, static analysis shall be done.
+    # There is a default list of checks.
     assert args.checks, "Logic error!"
 
     # Separate the list of checks and ensure they do exist.
