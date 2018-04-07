@@ -26,4 +26,6 @@ It is python based to be very usable and not production ready.
 ## Notes
 
 The formatting capabilities are not very advanced, but complement `fprettify`.
-It is recommended to run it first and then align `::`.
+
+Use `fprettify` for most of the formatting and use `flint` afterwards for
+specific issues.
