@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Define the abstract interface of all checks.
+Define the abstract interface of formatters.
 """
 
 import abc
 from file_io import CodeFile
 
 
-class AbstractCheck(object):
+class AbstractFormatter(object):
     """
-    This abstract class defines the interface all static analysis checks
-    must implement.
+    Abstract class as interface for all formatters.
     """
 
     __metaclass__ = abc.ABCMeta
@@ -24,9 +23,10 @@ class AbstractCheck(object):
         pass
 
     @abc.abstractmethod
-    def check(self):
+    def format(self):
         pass
 
     @abc.abstractmethod
-    def report(self):
+    def formatted_lines(self):
         pass
+        
