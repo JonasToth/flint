@@ -41,50 +41,6 @@ class TestCheckImplicitNone(unittest.TestCase):
         self.assertFalse(_match_implicit(" \t !\t implicit none!\tlaksd"))
         self.assertFalse(_match_implicit(" \t ! \t implicit none\t"))
 
-    def test_regex_start_construct(self):
-        self.assertTrue(_match_start_construct("function my_function"))
-        self.assertTrue(_match_start_construct("  function alksjd"))
-        self.assertTrue(_match_start_construct("\tfunction ! bla "))
-        self.assertTrue(_match_start_construct(" \t function asdj  "))
-
-        self.assertFalse(_match_start_construct("!function"))
-        self.assertFalse(_match_start_construct("!  end   function"))
-        self.assertFalse(_match_start_construct("\t! \tfunction ! bla "))
-        self.assertFalse(_match_start_construct(" \t ! \t function ! kajlsd"))
-        self.assertFalse(_match_start_construct(" \t ! function commentary"))
-
-        self.assertTrue(_match_start_construct("\tsubroutine"))
-        self.assertTrue(_match_start_construct("\t subroutine"))
-        self.assertTrue(_match_start_construct("\tsubroutine"))
-        self.assertTrue(_match_start_construct("\t subroutine"))
-
-        self.assertTrue(_match_start_construct("program"))
-        self.assertTrue(_match_start_construct("program"))
-        self.assertTrue(_match_start_construct("\tprogram"))
-        self.assertTrue(_match_start_construct("\t program"))
-
-    def test_regex_end_construct(self):
-        self.assertTrue(_match_end_construct("end function"))
-        self.assertTrue(_match_end_construct("  end   function"))
-        self.assertTrue(_match_end_construct("end\tfunction ! bla "))
-        self.assertTrue(_match_end_construct("end \t function"))
-
-        self.assertFalse(_match_end_construct("!end function"))
-        self.assertFalse(_match_end_construct("!  end   function"))
-        self.assertFalse(_match_end_construct("\t! end\tfunction ! bla "))
-        self.assertFalse(
-            _match_end_construct(" \t ! end \t function ! kajlsd"))
-
-        self.assertTrue(_match_end_construct("\tend subroutine"))
-        self.assertTrue(_match_end_construct("\t end   subroutine"))
-        self.assertTrue(_match_end_construct("end\tsubroutine"))
-        self.assertTrue(_match_end_construct("end \t subroutine"))
-
-        self.assertTrue(_match_end_construct("end program"))
-        self.assertTrue(_match_end_construct("end   program"))
-        self.assertTrue(_match_end_construct("end\tprogram"))
-        self.assertTrue(_match_end_construct("end \t program"))
-
     def test_simple(self):
         f_file = CodeFile(
             join(dirname(__file__), "../../test/check/implicit_none_simple.f90"))
