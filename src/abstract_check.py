@@ -19,7 +19,7 @@ class AbstractCheck(object):
     def __init__(self, f_file: CodeFile):
         self._f_file = f_file
 
-    @abc.abstractmethod
+    @classmethod
     def help(self):
         pass
 

@@ -17,8 +17,9 @@ class AbstractFormatter(object):
 
     def __init__(self, f_file: CodeFile):
         self._f_file = f_file
+        self._formatted_lines = []
 
-    @abc.abstractmethod
+    @classmethod
     def help(self):
         pass
 
@@ -26,7 +27,6 @@ class AbstractFormatter(object):
     def format(self):
         pass
 
-    @abc.abstractmethod
     def formatted_lines(self):
-        pass
+        return self._formatted_lines
         
