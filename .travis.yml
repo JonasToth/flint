@@ -11,3 +11,5 @@ os:
 
 script:
     - python3 -m unittest discover -v -s src/ -p 'test_*.py'
+    - python3 -m unittest discover -v -s src/check -p 'test_*.py'
+    - python3 -m unittest discover -v -s src/format -p 'test_*.py'
