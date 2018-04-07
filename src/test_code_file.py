@@ -21,21 +21,20 @@ class TestCodeFile(unittest.TestCase):
             join(dirname(__file__), "../test/simplest_fortran_file.f90"))
 
         original_content = [
-            "PROGRAM test_program",
-            "  integer  :: zahl ! Wir definieren eine Zahl",
-            "END PROGRAM test_program",
+            "PROGRAM test_program\n",
+            "  integer  :: zahl ! Wir definieren eine Zahl\n",
+            "END PROGRAM test_program\n",
         ]
         insensitive_content = [
-            "program test_program",
-            "  integer  :: zahl ! wir definieren eine zahl",
-            "end program test_program",
+            "program test_program\n",
+            "  integer  :: zahl ! wir definieren eine zahl\n",
+            "end program test_program\n",
         ]
 
-        for (i, line) in enumerate(f_file.original_lines()):
-            self.assertEqual(line, original_content[i])
+        print(f_file.insensitive_lines())
 
-        for (i, line) in enumerate(f_file.insensitive_lines()):
-            self.assertEqual(line, insensitive_content[i])
+        self.assertListEqual(original_content, f_file.original_lines())
+        self.assertListEqual(insensitive_content, f_file.insensitive_lines())
 
 
 if __name__ == "__main__":

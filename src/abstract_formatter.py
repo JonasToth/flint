@@ -1,32 +1,32 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Define the abstract interface of all checks.
+Define the abstract interface of formatters.
 """
 
 import abc
+import copy
 from file_io import CodeFile
 
 
-class AbstractCheck(object):
+class AbstractFormatter(object):
     """
-    This abstract class defines the interface all static analysis checks
-    must implement.
+    Abstract class as interface for all formatters.
     """
 
     __metaclass__ = abc.ABCMeta
 
     def __init__(self, f_file: CodeFile):
         self._f_file = f_file
+        self._formatted_lines = copy.deepcopy(self._f_file.original_lines())
 
     @classmethod
     def help(self):
         pass
 
     @abc.abstractmethod
-    def check(self):
+    def format(self):
         pass
 
-    @abc.abstractmethod
-    def report(self):
-        pass
+    def formatted_lines(self):
+        return self._formatted_lines

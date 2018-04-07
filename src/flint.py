@@ -8,6 +8,7 @@ import argparse
 import sys
 
 from check_implicit_none import CheckImplicitNone
+from format_align_colon import FormatAlignColon
 from file_io import CodeFile
 
 
@@ -22,7 +23,7 @@ def handle_analysis(args):
     }
 
     # If listing is wanted, only that will be done.
-    if args.list:
+    if args.list_checks:
         for name, class_ref in all_checks.items():
             print("{}: {}".format(name, class_ref.help()))
             return
@@ -44,7 +45,6 @@ def handle_analysis(args):
         print("Provide at least one file for analysis!", file=sys.stderr)
         sys.exit(1)
 
-
     for file in args.files:
         f_file = CodeFile(file)
         for check in enabled_checks:
@@ -59,7 +59,42 @@ def handle_formatting(args):
 
     :args: Command line arguments passed to the command.
     """
-    print(args)
+    all_formatters = {
+        "align-double-colon": FormatAlignColon,
+    }
+
+    # If listing is wanted, only that will be done.
+    if args.list_formatters:
+        for name, class_ref in all_formatters.items():
+            print("{}: {}".format(name, class_ref.help()))
+            return
+
+    # Reaching this point means, static analysis shall be done.
+    # There is a default list of checks.
+    assert args.formatters, "Logic error!"
+
+    # Separate the list of checks and ensure they do exist.
+    enabled_formatters = args.formatters.split(",")
+    for formatter in enabled_formatters:
+        if formatter not in all_formatters:
+            print(
+                "Configured formatter '{}' does not exist!".format(formatter),
+                file=sys.stderr)
+            sys.exit(1)
+
+    if not args.files:
+        print("Provide at least one file for analysis!", file=sys.stderr)
+        sys.exit(1)
+
+    for file in args.files:
+        f_file = CodeFile(file)
+        for formatter in enabled_formatters:
+            format_instance = all_formatters[formatter](f_file)
+            formatted_lines = format_instance.format()
+
+            f_file.update_lines(formatted_lines)
+
+        f_file.write()
 
 
 def main():
@@ -77,18 +112,26 @@ def main():
         default="implicit-none",
         help="Comma separated list of checks to enable.")
     parse_check.add_argument(
-        "-l", "--list", action="store_true", help="List all available checks.")
+        "--list-checks",
+        action="store_true",
+        help="List all available checks.")
     parse_check.add_argument(
         "files", nargs="*", help="List of fortran files to analyse")
     parse_check.set_defaults(func=handle_analysis)
 
     parse_format = subparser.add_parser("format", help="Format Code")
     parse_format.add_argument(
+        "--list-formatters",
+        action="store_true",
+        help="List all available formatters.")
+    parse_format.add_argument(
         "-f",
         "--formatters",
         type=str,
-        nargs=1,
+        default="align-double-colon",
         help="Comma separated list of formatters to apply in the given order.")
+    parse_format.add_argument(
+        "files", nargs="*", help="List of fortran files to analyse")
     parse_format.set_defaults(func=handle_formatting)
 
     args = parser.parse_args()

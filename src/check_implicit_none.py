@@ -72,6 +72,7 @@ class CheckImplicitNone(AbstractCheck):
         self._occurences = []
         self._log = logging.getLogger(__file__ + "::implicit_none")
 
+    @classmethod
     def help(self):
         return "Warn if 'implicit none' is not used"
 
