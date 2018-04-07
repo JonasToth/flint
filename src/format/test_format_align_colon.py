@@ -10,9 +10,9 @@ from os.path import dirname, join
 import unittest
 
 from file_io import CodeFile
-from format_align_colon import _match_blank_line, _match_comment_line,\
-                               _match_variable_colon, _align_colons,\
-                               FormatAlignColon
+from format.format_align_colon import _match_blank_line, _match_comment_line,\
+                                      _match_variable_colon, _align_colons,\
+                                      FormatAlignColon
 
 # logging.basicConfig(level=logging.DEBUG)
 
@@ -109,7 +109,7 @@ class TestFormatAlignColor(unittest.TestCase):
 
     def test_real_formatting(self):
         f_file = CodeFile(
-            join(dirname(__file__), "../test/format/format_real.f90"))
+            join(dirname(__file__), "../../test/format/format_real.f90"))
         f = FormatAlignColon(f_file)
         expected = [
             "  subroutine locate(l,n,array,var,pos)\n",
