@@ -109,7 +109,7 @@ class TestFormatAlignColor(unittest.TestCase):
 
     def test_real_formatting(self):
         f_file = CodeFile(
-            join(dirname(__file__), "../test/format/format_real.f90"))
+            join(dirname(__file__), "../../test/format/format_real.f90"))
         f = FormatAlignColon(f_file)
         expected = [
             "  subroutine locate(l,n,array,var,pos)\n",
