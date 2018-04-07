@@ -5,6 +5,7 @@ Define the abstract interface of formatters.
 """
 
 import abc
+import copy
 from file_io import CodeFile
 
 
@@ -17,7 +18,7 @@ class AbstractFormatter(object):
 
     def __init__(self, f_file: CodeFile):
         self._f_file = f_file
-        self._formatted_lines = []
+        self._formatted_lines = copy.deepcopy(self._f_file.original_lines())
 
     @classmethod
     def help(self):
@@ -29,4 +30,3 @@ class AbstractFormatter(object):
 
     def formatted_lines(self):
         return self._formatted_lines
-        
