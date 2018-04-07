@@ -20,37 +20,10 @@ import logging
 import re
 
 from abstract_formatter import AbstractFormatter
+from common_matcher import match_line, match_blank_line, match_commented_line
 from file_io import CodeFile
 
-__regex_blank_line = re.compile(r'^(\s*)$')
-__regex_comment_line = re.compile(r'^(\s*)!(.*)$')
 __regex_variable_colon = re.compile(r'[^!]+::(.*)$')
-
-
-def _match_blank_line(line):
-    """
-    Match with a regular expression, if `line` is blank.
-    This means only whitespace is allowed on the line.
-
-    :line: Arbitrary line of code.
-    :returns: True if the line is blank.
-    """
-    if __regex_blank_line.match(line):
-        return True
-    return False
-
-
-def _match_comment_line(line):
-    """
-    Match with a regular expression, if `line` contains only a comment.
-    Trailing comments are not matched!
-
-    :line: Arbitrary line of code.
-    :returns: True if the contains only a comment
-    """
-    if __regex_comment_line.match(line):
-        return True
-    return False
 
 
 def _match_variable_colon(line):
@@ -60,9 +33,7 @@ def _match_variable_colon(line):
 
     :line: Arbitracy line of code.
     """
-    if __regex_variable_colon.match(line):
-        return True
-    return False
+    return match_line(__regex_variable_colon, line)
 
 
 def _align_colons(lines):
@@ -159,13 +130,14 @@ class FormatAlignColon(AbstractFormatter):
                     in_decl_list = True
                 # ... or advance its end.
                 else:
-                    self._log.debug("advancing decl section to line %d" % (i + 1))
+                    self._log.debug("advancing decl section to line %d" %
+                                    (i + 1))
                     decl_end = i + 1
                 continue
 
             # Blank lines and comments in declaration sections are ignored.
-            if _match_blank_line(line) or\
-               _match_comment_line(line):
+            if match_blank_line(line) or\
+               match_commented_line(line):
                 if in_decl_list:
                     self._log.debug(
                         "skipping comment/blank line in decl section")
@@ -185,11 +157,12 @@ class FormatAlignColon(AbstractFormatter):
                 for new_line_idx, old_line_idx in enumerate(
                         range(decl_start, decl_end)):
                     self._log.debug("Overwriting:")
-                    self._log.debug("Old: {}".format(self._formatted_lines[old_line_idx]))
+                    self._log.debug("Old: {}".format(
+                        self._formatted_lines[old_line_idx]))
                     self._log.debug("New: {}".format(new[new_line_idx]))
                     self._formatted_lines[old_line_idx] = new[new_line_idx]
 
                 decl_start = -1
                 decl_end = -1
-        
+
         return self.formatted_lines()

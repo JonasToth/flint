@@ -32,3 +32,13 @@ def match_begin_block(line):
 
 def match_end_block(line):
     return match_line(__regex_end_block, line)
+
+
+__regex_blank_line = re.compile(r'^(\s*)$')
+__regex_comment_line = re.compile(r'^(\s*)!(.*)$')
+
+def match_blank_line(line):
+    return match_line(__regex_blank_line, line)
+
+def match_commented_line(line):
+    return match_line(__regex_comment_line, line)
