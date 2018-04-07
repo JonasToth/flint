@@ -5,14 +5,25 @@
 This tool aims to do code transformations and create warnings.
 It is python based to be very usable and not production ready.
 
-*IT CAN NOT BE TRUSTED!*
+**IT CAN NOT BE TRUSTED!**
 
 ## Features
 
+### Static Analysis
+
 - warn for missing `implicit none`
-- format variable declarations to align `::` and trailing comments
+
+### Formatting
+
+- format variable declarations to align `::`
 
 ## Other interesting tools
 
 - [fortran-syntax](https://github.com/cphyc/fortran-syntax)
 - [fprettify](https://github.com/pseewald/fprettify)
+
+
+## Notes
+
+The formatting capabilities are not very advanced, but complement `fprettify`.
+It is recommended to run it first and then align `::`.
