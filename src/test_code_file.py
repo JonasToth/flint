@@ -36,3 +36,7 @@ class TestCodeFile(unittest.TestCase):
 
         for (i, line) in enumerate(f_file.insensitive_lines()):
             self.assertEqual(line, insensitive_content[i])
+
+
+if __name__ == "__main__":
+    unittest.main()
