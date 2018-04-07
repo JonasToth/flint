@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/JonasToth/flint.svg?branch=master)](https://travis-ci.org/JonasToth/flint)
+
 # Toyproject to do some linting in our fortran code
 
 This tool aims to do code transformations and create warnings.
