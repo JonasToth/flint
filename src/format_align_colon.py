@@ -191,3 +191,5 @@ class FormatAlignColon(AbstractFormatter):
 
                 decl_start = -1
                 decl_end = -1
+        
+        return self.formatted_lines()

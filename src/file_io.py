@@ -20,8 +20,8 @@ class CodeFile(object):
         Initialize the code file.
 
         :file_path: Path of the fortran file.
-                    If the path is relative, the prefix of the execution 
-                    directory is added.
+        If the path is relative, the prefix of the execution
+        directory is added.
         """
         self._log = log.getLogger(__file__)
 
@@ -41,34 +41,48 @@ class CodeFile(object):
         """
         Return the original content as list of lines.
         :note: Use `insensitive_lines` for analysis.
-        :note: The lines do not include the \\n character.
+        :note: The lines do include the \\n character.
         """
         if self._original_file_content is None:
-            self.__read_content()
+            self.__read_file()
         return self._original_file_content
 
     def insensitive_lines(self):
         """
         Return a list of lines that are not case sensitive and better to
         work with while analyzing.
-        The lines do not include the \\n character.
+        The lines do include the \\n character.
         """
         if self._insensitive_file_content is None:
-            self.__read_content()
+            self.__read_file()
         return self._insensitive_file_content
 
-    def __read_content(self):
+    def update_lines(self, lines):
+        """Remove all current lines and overwrite them with `lines`."""
+        self.__assign_lines(lines)
+
+    def write(self):
+        """
+        Write the content of `_original_file_content` into the original file.
+        """
+        with open(self._file_path, 'w') as fortran_file:
+            fortran_file.writelines(self._original_file_content)
+
+    def __read_file(self):
         """Read the file content into memory."""
         assert self._original_file_content is None, "Already read file"
         assert self._insensitive_file_content is None, "Already read file"
-
         self._log.debug("Reading the content of the file %s" % self._file_path)
 
         with open(self._file_path) as fortran_file:
-            self._original_file_content = []
-            self._insensitive_file_content = []
+            self.__assign_lines(fortran_file)
 
-            for line in fortran_file:
-                self._original_file_content.append(line[:-1])
-                self._insensitive_file_content.append(line.lower()[:-1])
+    def __assign_lines(self, iteratable):
+        """Assign every line in `iterabtable` to the content."""
+        self._original_file_content = []
+        self._insensitive_file_content = []
 
+        for line in iteratable:
+            self._log.debug("assigning: %s" % line)
+            self._original_file_content.append(line)
+            self._insensitive_file_content.append(line.lower())
