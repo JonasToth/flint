@@ -31,8 +31,6 @@ class TestCodeFile(unittest.TestCase):
             "end program test_program\n",
         ]
 
-        print(f_file.insensitive_lines())
-
         self.assertListEqual(original_content, f_file.original_lines())
         self.assertListEqual(insensitive_content, f_file.insensitive_lines())
 
