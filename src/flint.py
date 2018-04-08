@@ -5,9 +5,11 @@ Executable that uses the implemented checks.
 """
 
 import argparse
+import logging
 import sys
 
 from check.check_implicit_none import CheckImplicitNone
+from check.check_format_label import CheckFormatLabel
 from format.format_align_colon import FormatAlignColon
 from file_io import CodeFile
 
@@ -20,6 +22,7 @@ def handle_analysis(args):
     """
     all_checks = {
         "implicit-none": CheckImplicitNone,
+        "format-label": CheckFormatLabel,
     }
 
     # If listing is wanted, only that will be done.
@@ -109,7 +112,7 @@ def main():
         "-c",
         "--checks",
         type=str,
-        default="implicit-none",
+        default="implicit-none,format-label",
         help="Comma separated list of checks to enable.")
     parse_check.add_argument(
         "--list-checks",
@@ -143,4 +146,5 @@ def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.WARNING)
     main()
