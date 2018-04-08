@@ -12,16 +12,18 @@ It is python based to be very usable and not production ready.
 ### Static Analysis
 
 - warn for missing `implicit none`
+- warn for usage of `FORMAT` labels
 
 ### Formatting
 
 - format variable declarations to align `::`
+- align trailing comments
 
 ## Other interesting tools
 
-- [fortran-syntax](https://github.com/cphyc/fortran-syntax)
-- [fprettify](https://github.com/pseewald/fprettify)
-
+- [fortran-syntax](https://github.com/cphyc/fortran-syntax) Linter
+- [fprettify](https://github.com/pseewald/fprettify) CodeFormatter
+- [CamFort](https://github.com/camfort/camfort) Verification
 
 ## Notes
 
