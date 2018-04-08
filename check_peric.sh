@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -d "~/Programme/iec/IB-Peric/" ]; then
+if [ ! -d ~/Programme/iec/IB-Peric/ ] || [ ! -d ~/Programme/iec/flint/ ]; then
     echo "Not on Jonas work station"
     exit 0
 fi
