@@ -19,10 +19,11 @@ real(8)    :: some_real
 import logging
 import re
 
-from format.abstract_formatter import AbstractFormatter
-from format.align import insert_whitespace, find_anchor
 from common_matcher import match_line, match_blank_line, match_commented_line
 from file_io import CodeFile
+from format.abstract_formatter import AbstractFormatter
+from format.align import insert_whitespace, find_anchor
+from format.utility import overwrite_lines
 
 __regex_variable_colon = re.compile(r'[^!]+::(.*)$')
 
@@ -37,7 +38,7 @@ def _match_variable_colon(line):
     return match_line(__regex_variable_colon, line)
 
 
-def _align_colons(lines):
+def _align_colons(lines: list):
     """
     Algorithm to align the colons of subsequent lines.
 
@@ -135,18 +136,12 @@ class FormatAlignColon(AbstractFormatter):
             if in_decl_list:
                 self._log.debug("ending declaration section")
                 in_decl_list = False
-                assert decl_start >= 0
-                assert decl_end >= 0
+                assert decl_start > 0
+                assert decl_end > 0
                 new = _align_colons(self._formatted_lines[decl_start:decl_end])
 
-                # Overwrite for formatting.
-                for new_line_idx, old_line_idx in enumerate(
-                        range(decl_start, decl_end)):
-                    self._log.debug("Overwriting:")
-                    self._log.debug("Old: {}".format(
-                        self._formatted_lines[old_line_idx]))
-                    self._log.debug("New: {}".format(new[new_line_idx]))
-                    self._formatted_lines[old_line_idx] = new[new_line_idx]
+                overwrite_lines(self._formatted_lines, new, decl_start,
+                                decl_end)
 
                 decl_start = -1
                 decl_end = -1
