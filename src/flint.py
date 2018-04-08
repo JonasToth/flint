@@ -64,7 +64,7 @@ def handle_formatting(args):
     :args: Command line arguments passed to the command.
     """
     all_formatters = {
-        # "align-double-colon": FormatAlignColon,
+        "align-double-colon": FormatAlignColon,
         "align-trailing-comment": FormatAlignTrailingComment,
     }
 
@@ -133,7 +133,7 @@ def main():
         "-f",
         "--formatters",
         type=str,
-        default="align-trailing-comment",
+        default="align-double-colon,align-trailing-comment",
         help="Comma separated list of formatters to apply in the given order.")
     parse_format.add_argument(
         "files", nargs="*", help="List of fortran files to analyse")
