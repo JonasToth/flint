@@ -11,6 +11,7 @@ import sys
 from check.check_implicit_none import CheckImplicitNone
 from check.check_format_label import CheckFormatLabel
 from format.format_align_colon import FormatAlignColon
+from format.format_trailing_comment import FormatAlignTrailingComment
 from file_io import CodeFile
 
 
@@ -64,6 +65,7 @@ def handle_formatting(args):
     """
     all_formatters = {
         "align-double-colon": FormatAlignColon,
+        "align-trailing-comment": FormatAlignTrailingComment,
     }
 
     # If listing is wanted, only that will be done.
@@ -131,7 +133,7 @@ def main():
         "-f",
         "--formatters",
         type=str,
-        default="align-double-colon",
+        default="align-double-colon,align-trailing-comment",
         help="Comma separated list of formatters to apply in the given order.")
     parse_format.add_argument(
         "files", nargs="*", help="List of fortran files to analyse")

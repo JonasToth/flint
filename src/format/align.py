@@ -27,7 +27,7 @@ def insert_whitespace(line: str, old_anchor: int, new_anchor):
     return line[:old_anchor] + " " * necessary_spaces + line[old_anchor:]
 
 
-def find_anchor(lines: list, anchor_str: str, skip_regex = None):
+def find_anchor(lines: list, anchor_str: str, skip_regex=None):
     """
     Find the position of the anchor_str (from left) for every line and
     return a list of indices to that anchor.
@@ -47,4 +47,3 @@ def find_anchor(lines: list, anchor_str: str, skip_regex = None):
             positions.append(line.find(anchor_str))
 
     return positions
-
