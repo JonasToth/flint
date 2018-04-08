@@ -55,6 +55,7 @@ class CheckImplicitNone(AbstractCheck):
             if _match_implicit(line):
                 self._log.debug("found implicit none with regex")
                 self._log.debug(line)
+                assert len(construct_stack) > 0
 
                 construct_stack[-1]["implicit_none"] = True
                 continue
@@ -83,6 +84,8 @@ class CheckImplicitNone(AbstractCheck):
                     "implicit_none": False
                 })
                 continue
+
+        assert len(construct_stack) == 0
 
     def report(self):
         """

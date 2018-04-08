@@ -23,9 +23,9 @@ def match_line(regex, line):
 
 
 __regex_begin_block = re.compile(
-    r'[^!]*(?!end(\s+))(function|subroutine|program|module)(.*)')
+    r'(^\s*|^[^!]*\s+)(function|subroutine|program|module)\s+(.*)$')
 __regex_end_block = re.compile(
-    r'[^!]*end(\s+)(function|subroutine|program|module)(.*)')
+    r'^[^!]*end(\s+)(function|subroutine|program|module)(.*)$')
 
 def match_begin_block(line):
     return match_line(__regex_begin_block, line)

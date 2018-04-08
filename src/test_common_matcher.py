@@ -20,6 +20,7 @@ class TestCheckCommonMatcher(unittest.TestCase):
         self.assertTrue(match_begin_block(" \t function asdj  "))
         self.assertTrue(match_begin_block(" pure \t function asdj  "))
         self.assertTrue(match_begin_block(" pure function asdj  "))
+        self.assertTrue(match_begin_block(" real(real_p) function asdj  "))
 
         self.assertFalse(match_begin_block("!function"))
         self.assertFalse(match_begin_block("!  end   function"))
@@ -28,15 +29,20 @@ class TestCheckCommonMatcher(unittest.TestCase):
         self.assertFalse(match_begin_block(" \t ! function commentary"))
         self.assertFalse(match_begin_block(" \t ! pure function commentary"))
 
-        self.assertTrue(match_begin_block("\tsubroutine"))
-        self.assertTrue(match_begin_block("\t subroutine"))
-        self.assertTrue(match_begin_block("\tsubroutine"))
-        self.assertTrue(match_begin_block("\t subroutine"))
+        self.assertTrue(match_begin_block("\tsubroutine asj"))
+        self.assertTrue(match_begin_block("\t subroutine lkajsd"))
+        self.assertTrue(match_begin_block("\tsubroutine   lsd (lalkd, k)"))
+        self.assertTrue(match_begin_block("\t subroutine lsd (asd)"))
 
-        self.assertTrue(match_begin_block("program"))
-        self.assertTrue(match_begin_block("program"))
-        self.assertTrue(match_begin_block("\tprogram"))
-        self.assertTrue(match_begin_block("\t program"))
+        self.assertTrue(match_begin_block("program name"))
+        self.assertTrue(match_begin_block("program aslkdj"))
+        self.assertTrue(match_begin_block("\tprogram lkajsd"))
+        self.assertTrue(match_begin_block("\t program alkasd "))
+
+        self.assertTrue(match_begin_block("module name"))
+        self.assertTrue(match_begin_block("module aslkdj"))
+        self.assertTrue(match_begin_block("\tmodule lkajsd"))
+        self.assertTrue(match_begin_block("\t module alkasd "))
 
     def test_match_end_block(self):
         self.assertTrue(match_end_block("end function"))
