@@ -63,17 +63,16 @@ class TestFormatAlignColor(unittest.TestCase):
 
     def test_complex_alignment(self):
         lines = [
-            " integer(8), intent(in) :: asldk", " ! We can define reals, too",
-            " real(8), intent(inout), dimension(10)   :: real_field", "",
-            "     ", "  ! or even something like this",
-            "   integer(2) :: flag  ! and have some weird code"
+            " integer(8), intent(in) :: asldk\n",
+            " ! We can define reals, too\n",
+            " real(8), intent(inout), dimension(10)   :: real_field\n",
+            "   integer(2) :: flag  ! and have some weird code\n"
         ]
         expec = [
-            " integer(8), intent(in)                  :: asldk",
-            " ! We can define reals, too",
-            " real(8), intent(inout), dimension(10)   :: real_field", "",
-            "     ", "  ! or even something like this",
-            "   integer(2)                            :: flag  ! and have some weird code"
+            " integer(8), intent(in)                  :: asldk\n",
+            " ! We can define reals, too\n",
+            " real(8), intent(inout), dimension(10)   :: real_field\n",
+            "   integer(2)                            :: flag  ! and have some weird code\n"
         ]
         self.assertListEqual(expec, _align_colons(lines))
 
@@ -95,9 +94,9 @@ class TestFormatAlignColor(unittest.TestCase):
             "\n",
             "    ! interrupting comment\n",
             "\n",
-            "    integer(int_p)                         :: jl !> Lower limit.\n",
-            "    integer(int_p)                         :: jm !> Midpoint\n",
-            "    integer(int_p)                         :: ju !> Upper limit\n",
+            "    integer(int_p) :: jl !> Lower limit.\n",
+            "    integer(int_p) :: jm !> Midpoint\n",
+            "    integer(int_p) :: ju !> Upper limit\n",
             "    ! Initialize lower limit (L=0 FOR A NORMAL VECTOR!).\n",
             "    jl=l\n",
             "    ! Initialize upper limit.\n",

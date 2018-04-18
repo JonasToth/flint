@@ -78,14 +78,14 @@ class FormatAlignColon(AbstractFormatter):
     ```
     becomes
     ```fortran
-    integer(8)   :: some_int
-    real(8)      :: some_real
+    integer(8) :: some_int
+    real(8)    :: some_real
 
     integer(8)   :: another_int
     ! asdojasdlkj
     real(8)      :: and_another_one
     ```
-    Formatting will ignore blank lines and lines that start with a comment.
+    Formatting will ignore lines that start with a comment.
     """
 
     def __init__(self, f_file: CodeFile):
@@ -122,9 +122,8 @@ class FormatAlignColon(AbstractFormatter):
                     decl_end = i + 1
                 continue
 
-            # Blank lines and comments in declaration sections are ignored.
-            if match_blank_line(line) or\
-               match_commented_line(line):
+            # Comments in declaration sections are ignored.
+            if match_commented_line(line):
                 if in_decl_list:
                     self._log.debug(
                         "skipping comment/blank line in decl section")

@@ -16,7 +16,7 @@ real(8) :: some_real       ! alskdj
 becomes
 ```fortran
 integer(8) :: some_int     ! asdlkja
-real(8)    :: some_real    ! alskdj
+real(8) :: some_real       ! alskdj
                            ! continue the comment
 
 ! not in sequence

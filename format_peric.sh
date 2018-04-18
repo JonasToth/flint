@@ -16,7 +16,7 @@ STATUS=$?
 # git stash apply
 
 echo "Restore with:"
-echo "$ git checkout -- mod_kinds.f90 mod_constants.f90 mod_solver.f90 mod_utility.f90 prog.f90 Grid/mod_multigrid.f90 Geometry/geom.f90 Geometry/mod_geometry.f90"
+echo "$ git checkout -- mod_kinds.f90 mod_constants.f90 mod_solver.f90 mod_utility.f90 prog.f90 Grid/mod_multigrid.f90 Geometry/mod_geometry.f90"
 # echo "$ git stash apply"
 
 exit $STATUS
