@@ -7,7 +7,9 @@ Test functions for common matcher functions.
 import unittest
 
 from common_matcher import match_begin_block, match_end_block,\
-                           match_blank_line, match_commented_line
+                           match_blank_line, match_commented_line,\
+                           match_ignore_single, match_ignore_start, \
+                           match_ignore_end
 
 
 class TestCheckCommonMatcher(unittest.TestCase):
@@ -93,3 +95,46 @@ class TestCheckCommonMatcher(unittest.TestCase):
         self.assertFalse(match_commented_line("integer(8) :: i"))
         self.assertFalse(match_commented_line("integer(8) :: i ! comment"))
         self.assertFalse(match_commented_line(" \t integer(8) :: i ! comment"))
+
+
+    def test_ignore_single(self):
+        self.assertTrue(match_ignore_single("!&"))
+        self.assertTrue(match_ignore_single(" here comes some code!&"))
+        self.assertTrue(match_ignore_single(" here comes some code  !&"))
+        self.assertTrue(match_ignore_single(" here comes some code  !& asd "))
+
+        self.assertFalse(match_ignore_single(" here comes some code  !"))
+        self.assertFalse(match_ignore_single(" ! here comes some code  !"))
+        self.assertFalse(match_ignore_single(" ! here comes some code  !&"))
+        self.assertFalse(match_ignore_single(" here comes some code"))
+        self.assertFalse(match_ignore_single(""))
+        self.assertFalse(match_ignore_single("  "))
+        self.assertFalse(match_ignore_single(" \t\n "))
+
+    def test_ignore_start(self):
+        self.assertTrue(match_ignore_start("!&>"))
+        self.assertTrue(match_ignore_start("  \t !&>"))
+        self.assertTrue(match_ignore_start("  \t !&>   \t"))
+        self.assertTrue(match_ignore_start("  \t !&> Reasons  \t"))
+
+        self.assertFalse(match_ignore_start(" here comes some code  !&>"))
+        self.assertFalse(match_ignore_start(" here comes some code  !&>"))
+        self.assertFalse(match_ignore_start(" ! here coe !"))
+        self.assertFalse(match_ignore_start(" here comes some code"))
+        self.assertFalse(match_ignore_start(""))
+        self.assertFalse(match_ignore_start("  "))
+        self.assertFalse(match_ignore_start(" \t\n "))
+
+    def test_ignore_end(self):
+        self.assertTrue(match_ignore_end("!&<"))
+        self.assertTrue(match_ignore_end("  \t !&<"))
+        self.assertTrue(match_ignore_end("  \t !&<   \t"))
+        self.assertTrue(match_ignore_end("  \t !&< Reasons  \t"))
+
+        self.assertFalse(match_ignore_end(" here comes some code  !&<"))
+        self.assertFalse(match_ignore_end(" here comes some code  !&<"))
+        self.assertFalse(match_ignore_end(" ! here coe !"))
+        self.assertFalse(match_ignore_end(" here comes some code"))
+        self.assertFalse(match_ignore_end(""))
+        self.assertFalse(match_ignore_end("  "))
+        self.assertFalse(match_ignore_end(" \t\n "))
