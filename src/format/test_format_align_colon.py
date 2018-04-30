@@ -76,6 +76,7 @@ class TestFormatAlignColor(unittest.TestCase):
         ]
         self.assertListEqual(expec, _align_colons(lines))
 
+    @unittest.skip
     def test_block_ignore(self):
         lines = [
             " !&<\n",
