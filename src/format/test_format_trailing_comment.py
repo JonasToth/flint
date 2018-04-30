@@ -6,7 +6,7 @@ Implement unit tests for the formatter to align trailing comments.
 
 import unittest
 from format_trailing_comment import _match_trailing_comment,\
-                                    _match_omp_directive
+                                    _match_omp_directive, _align_comments
 
 
 class TestFormatTrailingComment(unittest.TestCase):
