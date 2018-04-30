@@ -103,6 +103,10 @@ class TestCheckCommonMatcher(unittest.TestCase):
         self.assertTrue(match_ignore_single(" here comes some code  !&"))
         self.assertTrue(match_ignore_single(" here comes some code  !& asd "))
 
+        self.assertFalse(match_ignore_single("  !&<"))
+        self.assertFalse(match_ignore_single("  !&< alsd "))
+        self.assertFalse(match_ignore_single("  !&>"))
+        self.assertFalse(match_ignore_single("  !&> alsd "))
         self.assertFalse(match_ignore_single(" here comes some code  !"))
         self.assertFalse(match_ignore_single(" ! here comes some code  !"))
         self.assertFalse(match_ignore_single(" ! here comes some code  !&"))

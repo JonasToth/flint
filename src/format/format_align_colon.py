@@ -63,7 +63,7 @@ def _align_colons(lines: list):
     formatted_lines = []
     for i, line in enumerate(lines):
         # Only actual variable definitions are reformated.
-        if _match_variable_colon(line):
+        if _match_variable_colon(line) and not match_ignore_single(line):
             line = insert_whitespace(line, colon_position[i], max_colon)
 
         formatted_lines.append(line)

@@ -46,7 +46,7 @@ def match_commented_line(line):
 
 __regex_begin_ignore = re.compile(r'^\s*(!&<).*$')
 __regex_end_ignore = re.compile(r'^\s*(!&>).*$')
-__regex_single_ignore = re.compile(r'^[^!]*!&.*$')
+__regex_single_ignore = re.compile(r'^[^!]*!&[^<>]*$')
 
 def match_ignore_single(line):
     return match_line(__regex_single_ignore, line)
