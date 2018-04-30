@@ -20,6 +20,8 @@ import logging
 import re
 
 from common_matcher import match_line, match_blank_line, match_commented_line
+from common_matcher import match_ignore_single, match_ignore_begin,\
+                           match_ignore_end
 from file_io import CodeFile
 from format.abstract_formatter import AbstractFormatter
 from format.align import insert_whitespace, find_anchor
@@ -50,7 +52,10 @@ def _align_colons(lines: list):
     if len(lines) == 0:
         return []
 
-    colon_position = find_anchor(lines, "::", skip_regex=match_commented_line)
+    colon_position = find_anchor(
+        lines,
+        "::",
+        skip_func=lambda l: match_commented_line(l) or match_ignore_single(l))
 
     # https://stackoverflow.com/questions/11530799/python-finding-index-of-maximum-in-list
     (max_colon, max_line) = max((v, i) for i, v in enumerate(colon_position))
@@ -99,11 +104,27 @@ class FormatAlignColon(AbstractFormatter):
 
     def format(self):
         in_decl_list = False
+        in_ignore = False
         decl_start = -1
         decl_end = -1
 
         for (i, line) in enumerate(self._formatted_lines):
             self._log.debug("Line: {}".format(line))
+
+            # Check if the deactivation mechanism matches
+            if match_ignore_begin(line):
+                in_ignore = True
+
+                in_decl_list = False
+                decl_start = -1
+                decl_end = -1
+                continue
+
+            if in_ignore:
+                if match_ignore_end(line):
+                    in_ignore = False
+                continue
+
             # Start a declaration section if necessary.
             # If already in a declaration section, continue.
             if _match_variable_colon(line):

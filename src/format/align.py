@@ -27,21 +27,21 @@ def insert_whitespace(line: str, old_anchor: int, new_anchor):
     return line[:old_anchor] + " " * necessary_spaces + line[old_anchor:]
 
 
-def find_anchor(lines: list, anchor_str: str, skip_regex=None):
+def find_anchor(lines: list, anchor_str: str, skip_func=None):
     """
     Find the position of the anchor_str (from left) for every line and
     return a list of indices to that anchor.
 
     :line: list: list of strings that are a line each
     :anchor_str: str: a characteristic string or character, searched from left
-    :skip_regex: (compiled) regular expression that initates a line skip
+    :skip_func: (compiled) regular expression that initates a line skip
     :returns: list: list of indices the `anchor_str` starts, -1 if not existing
     """
     positions = []
     for line in lines:
         # There might be lines in `lines` that should not count. Filter
-        # them with `skip_regex` if wanted.
-        if skip_regex and skip_regex(line):
+        # them with `skip_func` if wanted.
+        if skip_func and skip_func(line):
             positions.append(-1)
         else:
             positions.append(line.find(anchor_str))
