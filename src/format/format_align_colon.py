@@ -20,7 +20,7 @@ import logging
 import re
 
 from common_matcher import match_line, match_blank_line, match_commented_line
-from common_matcher import match_ignore_single, match_ignore_begin,\
+from common_matcher import match_ignore_single, match_ignore_start,\
                            match_ignore_end
 from file_io import CodeFile
 from format.abstract_formatter import AbstractFormatter
@@ -112,7 +112,7 @@ class FormatAlignColon(AbstractFormatter):
             self._log.debug("Line: {}".format(line))
 
             # Check if the deactivation mechanism matches
-            if match_ignore_begin(line):
+            if match_ignore_start(line):
                 in_ignore = True
 
                 in_decl_list = False

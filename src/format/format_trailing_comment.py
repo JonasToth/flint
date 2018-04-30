@@ -26,7 +26,7 @@ real(8) :: some_real       ! alskdj
 import logging
 import re
 from common_matcher import match_line, match_blank_line, match_commented_line
-from common_matcher import match_ignore_single, match_ignore_begin,\
+from common_matcher import match_ignore_single, match_ignore_start,\
                            match_ignore_end
 from file_io import CodeFile
 from format.abstract_formatter import AbstractFormatter
@@ -121,7 +121,7 @@ class FormatAlignTrailingComment(AbstractFormatter):
         seq_end = -1
 
         for (i, line) in enumerate(self._formatted_lines):
-            if match_begin_ignore(line):
+            if match_ignore_start(line):
                 in_ignore = True
 
                 in_sequence = False
@@ -130,7 +130,7 @@ class FormatAlignTrailingComment(AbstractFormatter):
                 continue
 
             if in_ignore:
-                if match_end_ignore(line):
+                if match_ignore_end(line):
                     in_ignore = False
                 continue
 
