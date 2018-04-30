@@ -76,6 +76,40 @@ class TestFormatAlignColor(unittest.TestCase):
         ]
         self.assertListEqual(expec, _align_colons(lines))
 
+    def test_block_ignore(self):
+        lines = [
+            " !&<\n",
+            " integer(8), intent(in) :: asldk\n",
+            " real(8), intent(inout), dimension(10)   :: real_field\n",
+            " !&>\n",
+            "   integer(2) :: flag1  ! and have some weird code\n"
+            "   integer(2)   :: flag2  ! and have some weird code\n"
+            "   integer(2)     :: flag3  ! and have some weird code\n"
+        ]
+        expec = [
+            " !&<\n",
+            " integer(8), intent(in) :: asldk\n",
+            " real(8), intent(inout), dimension(10)   :: real_field\n",
+            " !&>\n",
+            "   integer(2)     :: flag1  ! and have some weird code\n"
+            "   integer(2)     :: flag2  ! and have some weird code\n"
+            "   integer(2)     :: flag3  ! and have some weird code\n"
+        ]
+        self.assertListEqual(expec, _align_colons(lines))
+
+    def test_single_ignore(self):
+        lines = [
+            "   integer(2) :: flag1  ! and have some weird code\n"
+            "   integer(2)   :: flag2  !& and have some weird code\n"
+            "   integer(2)     :: flag3  ! and have some weird code\n"
+        ]
+        expec = [
+            "   integer(2)     :: flag1  ! and have some weird code\n"
+            "   integer(2)   :: flag2  !& and have some weird code\n"
+            "   integer(2)     :: flag3  ! and have some weird code\n"
+        ]
+        self.assertListEqual(expec, _align_colons(lines))
+
     def test_real_formatting(self):
         f_file = CodeFile(
             join(dirname(__file__), "../../test/format/format_real.f90"))

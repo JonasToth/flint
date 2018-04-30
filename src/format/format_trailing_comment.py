@@ -26,8 +26,7 @@ real(8) :: some_real       ! alskdj
 import logging
 import re
 from common_matcher import match_line, match_blank_line, match_commented_line
-from common_matcher import match_ignore_single, match_ignore_start,\
-                           match_ignore_end
+from common_matcher import match_ignore_start, match_ignore_end
 from file_io import CodeFile
 from format.abstract_formatter import AbstractFormatter
 from format.align import insert_whitespace, find_anchor
@@ -68,13 +67,13 @@ def _align_comments(lines: list):
     comment_posi = find_anchor(
         lines,
         "!",
-        skip_func=lambda l: _match_omp_directive(l) or match_ignore_single(l))
+        skip_func=_match_omp_directive)
     (max_comment, max_line) = max((v, i) for i, v in enumerate(comment_posi))
 
     formatted_lines = []
 
     for i, line in enumerate(lines):
-        if not (_match_omp_directive(line) or match_ignore_single(line)):
+        if not _match_omp_directive(line):
             line = insert_whitespace(line, comment_posi[i], max_comment)
         formatted_lines.append(line)
 
