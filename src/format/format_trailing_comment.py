@@ -26,6 +26,7 @@ real(8) :: some_real       ! alskdj
 import logging
 import re
 from common_matcher import match_line, match_blank_line, match_commented_line
+from common_matcher import match_ignore_start, match_ignore_end
 from file_io import CodeFile
 from format.abstract_formatter import AbstractFormatter
 from format.align import insert_whitespace, find_anchor
@@ -45,6 +46,7 @@ def _match_trailing_comment(line):
           match_line(REGEX_TRAILING_COMMENT, line)
     return res
 
+
 def _match_omp_directive(line):
     """
     Match if a comment is a OMP directive.
@@ -62,7 +64,10 @@ def _align_comments(lines: list):
     if len(lines) == 0:
         return []
 
-    comment_posi = find_anchor(lines, "!", skip_regex=_match_omp_directive)
+    comment_posi = find_anchor(
+        lines,
+        "!",
+        skip_func=_match_omp_directive)
     (max_comment, max_line) = max((v, i) for i, v in enumerate(comment_posi))
 
     formatted_lines = []
@@ -110,10 +115,24 @@ class FormatAlignTrailingComment(AbstractFormatter):
 
     def format(self):
         in_sequence = False
+        in_ignore = False
         seq_start = -1
         seq_end = -1
 
         for (i, line) in enumerate(self._formatted_lines):
+            if match_ignore_start(line):
+                in_ignore = True
+
+                in_sequence = False
+                seq_start = -1
+                seq_end = -1
+                continue
+
+            if in_ignore:
+                if match_ignore_end(line):
+                    in_ignore = False
+                continue
+
             # Start a sequence if there is a trailing comment.
             if not in_sequence and _match_trailing_comment(line):
                 self._log.debug("starting sequence at %d" % i)
@@ -152,5 +171,8 @@ class FormatAlignTrailingComment(AbstractFormatter):
 
             # Ignore the rest of possible lines
             continue
+
+        if in_ignore:
+            self._log.warn("Missing end of ignore sequence!")
 
         return self.formatted_lines()

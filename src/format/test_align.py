@@ -38,4 +38,4 @@ class TestAlign(unittest.TestCase):
         ]
         self.assertListEqual([15, 11, -1, 28, -1],
                              find_anchor(
-                                 lines, "::", skip_regex=match_commented_line))
+                                 lines, "::", skip_func=match_commented_line))
