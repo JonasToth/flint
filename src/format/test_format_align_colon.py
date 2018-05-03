@@ -13,7 +13,7 @@ from file_io import CodeFile, FortranCode
 from format.format_align_colon import _match_variable_colon, _align_colons,\
                                       FormatAlignColon
 
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 
 class TestFormatAlignColor(unittest.TestCase):
