@@ -91,6 +91,9 @@ class TestFormatAlignColor(unittest.TestCase):
         f.format()
         result = f.formatted_lines()
 
+        for l in result:
+            print(l)
+
         expec = [
             " !&<\n",
             " integer(8), intent(in) :: asldk\n",
