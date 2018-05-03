@@ -6,7 +6,7 @@ Define the abstract interface of formatters.
 
 import abc
 import copy
-from file_io import CodeFile
+from file_io import FortranCode
 
 
 class AbstractFormatter(object):
@@ -16,7 +16,7 @@ class AbstractFormatter(object):
 
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, f_file: CodeFile):
+    def __init__(self, f_file: FortranCode):
         self._f_file = f_file
         self._formatted_lines = copy.deepcopy(self._f_file.original_lines())
 

@@ -5,8 +5,10 @@ Implement unit tests for the formatter to align trailing comments.
 """
 
 import unittest
+from file_io import FortranCode
 from format_trailing_comment import _match_trailing_comment,\
                                     _match_omp_directive, _align_comments
+from format_trailing_comment import FormatAlignTrailingComment
 
 
 class TestFormatTrailingComment(unittest.TestCase):
@@ -43,7 +45,6 @@ class TestFormatTrailingComment(unittest.TestCase):
         self.assertFalse(_match_omp_directive("!$ OMP"))
         self.assertFalse(_match_omp_directive("!!$ OMP"))
 
-    @unittest.skip
     def test_block_ignore(self):
         lines = [
             " !&<\n",
@@ -53,7 +54,13 @@ class TestFormatTrailingComment(unittest.TestCase):
             "   integer(2) :: flag1  ! and have some weird code\n",
             "   integer(2)   :: flag2  ! and have some weird code\n",
             "   integer(2)     :: flag3  ! and have some weird code\n",
+            "\n",
         ]
+        f_file = FortranCode(lines)
+        f = FormatAlignTrailingComment(f_file)
+        f.format()
+        result = f.formatted_lines()
+
         expec = [
             " !&<\n",
             " integer(8), intent(in) :: asldk    ! alksjdasdlj\n",
@@ -62,8 +69,9 @@ class TestFormatTrailingComment(unittest.TestCase):
             "   integer(2) :: flag1      ! and have some weird code\n",
             "   integer(2)   :: flag2    ! and have some weird code\n",
             "   integer(2)     :: flag3  ! and have some weird code\n",
+            "\n",
         ]
-        self.assertListEqual(expec, _align_comments(lines))
+        self.assertListEqual(expec, result)
 
     def test_single_ignore(self):
         lines = [

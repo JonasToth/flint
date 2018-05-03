@@ -113,6 +113,7 @@ class FormatAlignColon(AbstractFormatter):
 
             # Check if the deactivation mechanism matches
             if match_ignore_start(line):
+                self._log.debug("start block ignore")
                 in_ignore = True
 
                 in_decl_list = False
@@ -122,6 +123,7 @@ class FormatAlignColon(AbstractFormatter):
 
             if in_ignore:
                 if match_ignore_end(line):
+                    self._log.debug("end block ignore")
                     in_ignore = False
                 continue
 
