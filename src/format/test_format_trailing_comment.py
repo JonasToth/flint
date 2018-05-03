@@ -54,6 +54,7 @@ class TestFormatTrailingComment(unittest.TestCase):
             "   integer(2) :: flag1  ! and have some weird code\n",
             "   integer(2)   :: flag2  ! and have some weird code\n",
             "   integer(2)     :: flag3  ! and have some weird code\n",
+            "\n",
         ]
         f_file = FortranCode(lines)
         f = FormatAlignTrailingComment(f_file)
@@ -68,6 +69,7 @@ class TestFormatTrailingComment(unittest.TestCase):
             "   integer(2) :: flag1      ! and have some weird code\n",
             "   integer(2)   :: flag2    ! and have some weird code\n",
             "   integer(2)     :: flag3  ! and have some weird code\n",
+            "\n",
         ]
         self.assertListEqual(expec, result)
 

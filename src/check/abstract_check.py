@@ -5,7 +5,7 @@ Define the abstract interface of all checks.
 """
 
 import abc
-from file_io import CodeFile
+from file_io import FortranCode
 
 
 class AbstractCheck(object):
@@ -16,7 +16,7 @@ class AbstractCheck(object):
 
     __metaclass__ = abc.ABCMeta
 
-    def __init__(self, f_file: CodeFile):
+    def __init__(self, f_file: FortranCode):
         self._f_file = f_file
 
     @classmethod

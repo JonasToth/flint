@@ -13,7 +13,7 @@ from file_io import CodeFile, FortranCode
 from format.format_align_colon import _match_variable_colon, _align_colons,\
                                       FormatAlignColon
 
-# logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 
 class TestFormatAlignColor(unittest.TestCase):
@@ -85,6 +85,7 @@ class TestFormatAlignColor(unittest.TestCase):
             "   integer(2) :: flag1  ! and have some weird code\n",
             "   integer(2)   :: flag2  ! and have some weird code\n",
             "   integer(2)     :: flag3  ! and have some weird code\n",
+            "\n",
         ]
         f_file = FortranCode(lines)
         f = FormatAlignColon(f_file)
@@ -102,6 +103,7 @@ class TestFormatAlignColor(unittest.TestCase):
             "   integer(2)     :: flag1  ! and have some weird code\n",
             "   integer(2)     :: flag2  ! and have some weird code\n",
             "   integer(2)     :: flag3  ! and have some weird code\n",
+            "\n",
         ]
         self.assertListEqual(expec, result)
 
@@ -125,45 +127,34 @@ class TestFormatAlignColor(unittest.TestCase):
         expected = [
             "  subroutine locate(l,n,array,var,pos)\n",
             "    !> Search the index of given value in sorted 1D array of unique values.\n",
-            "    !>\n",
-            "    !> It uses a binary search algorithm.\n",
+            "    !>\n", "    !> It uses a binary search algorithm.\n",
             "    implicit none\n",
             "    integer(int_p), intent(in)             :: l !> Initial guess of lower limit.\n",
             "    integer(int_p), intent(in)             :: n !> Size of array.\n",
             "    real(real_p), dimension(n), intent(in) :: array !> Sorted array to search.\n",
             "    real(real_p), intent(in)               :: var !> Value to find.\n",
             "    integer(int_p), intent(out)            :: pos !> Resulting index.\n",
-            "\n",
-            "    ! interrupting comment\n",
-            "\n",
+            "\n", "    ! interrupting comment\n", "\n",
             "    integer(int_p) :: jl !> Lower limit.\n",
             "    integer(int_p) :: jm !> Midpoint\n",
             "    integer(int_p) :: ju !> Upper limit\n",
             "    ! Initialize lower limit (L=0 FOR A NORMAL VECTOR!).\n",
-            "    jl=l\n",
-            "    ! Initialize upper limit.\n",
-            "    ju=jl+n+1\n",
+            "    jl=l\n", "    ! Initialize upper limit.\n", "    ju=jl+n+1\n",
             "    ! If we are not yet done compute a midpoint.\n",
-            "    pos=max(l+1,pos)\n",
-            "    return\n",
-            "  end subroutine locate\n",
-            "\n",
-            "\n",
+            "    pos=max(l+1,pos)\n", "    return\n",
+            "  end subroutine locate\n", "\n", "\n",
             "  pure function equal(arg1,arg2) result(res)\n",
             "      !> Returns whether the arguments are equal to machine precision\n",
             "      real(real_p), intent(in) :: arg1, arg2\n",
             "      logical                  :: res\n",
             "      res = (abs(arg1-arg2) < REALTOL)\n",
-            "  end function equal\n",
-            "\n",
+            "  end function equal\n", "\n",
             "  subroutine print_assertion_error(filename, line, error_msg)\n",
-            "    implicit none\n",
-            "\n",
+            "    implicit none\n", "\n",
             "    character(len=*), intent(in) :: filename\n",
             "    integer(int_p), intent(in)   :: line\n",
             "    character(len=*), intent(in) :: error_msg\n",
-            "    character(len=10)            :: line_string\n",
-            "\n",
+            "    character(len=10)            :: line_string\n", "\n",
             "    write (line_string, '(I2)') line\n",
             "    write (*,*) trim(filename) // \": \" // trim(line_string) // \": \" // trim(error_msg)\n",
             "  end subroutine print_assertion_error\n"
@@ -172,3 +163,7 @@ class TestFormatAlignColor(unittest.TestCase):
         new_file = f.formatted_lines()
 
         self.assertListEqual(expected, new_file)
+
+
+if __name__ == "__main__":
+    unittest.main()
