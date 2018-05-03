@@ -27,8 +27,6 @@ class FortranCode(object):
         :note: Use `insensitive_lines` for analysis.
         :note: The lines do include the \\n character.
         """
-        if self._original_file_content is None:
-            self.__read_file()
         return self._original_file_content
 
     def insensitive_lines(self):
@@ -37,8 +35,6 @@ class FortranCode(object):
         work with while analyzing.
         The lines do include the \\n character.
         """
-        if self._insensitive_file_content is None:
-            self.__read_file()
         return self._insensitive_file_content
 
     def update_lines(self, lines: list):
@@ -76,11 +72,30 @@ class CodeFile(FortranCode):
         self._log.debug("Set _file_path to %s" % os.path.abspath(file_path))
         self._file_path = os.path.abspath(file_path)
 
-        self.__read_file()
-
     def path(self):
         """Return the absolute path of the `CodeFile`."""
         return self._file_path
+
+    def original_lines(self):
+        """
+        Return the original content as list of lines.
+        :note: Use `insensitive_lines` for analysis.
+        :note: The lines do include the \\n character.
+        """
+        if self._original_file_content is None:
+            self.__read_file()
+        return self._original_file_content
+
+    def insensitive_lines(self):
+        """
+        Return a list of lines that are not case sensitive and better to
+        work with while analyzing.
+        The lines do include the \\n character.
+        """
+        if self._insensitive_file_content is None:
+            self.__read_file()
+        return self._insensitive_file_content
+
 
     def write(self):
         """

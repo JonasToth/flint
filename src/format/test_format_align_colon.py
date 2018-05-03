@@ -9,7 +9,7 @@ import logging
 from os.path import dirname, join
 import unittest
 
-from file_io import CodeFile
+from file_io import CodeFile, FortranCode
 from format.format_align_colon import _match_variable_colon, _align_colons,\
                                       FormatAlignColon
 
@@ -76,7 +76,6 @@ class TestFormatAlignColor(unittest.TestCase):
         ]
         self.assertListEqual(expec, _align_colons(lines))
 
-    @unittest.skip
     def test_block_ignore(self):
         lines = [
             " !&<\n",
@@ -87,6 +86,11 @@ class TestFormatAlignColor(unittest.TestCase):
             "   integer(2)   :: flag2  ! and have some weird code\n",
             "   integer(2)     :: flag3  ! and have some weird code\n",
         ]
+        f_file = FortranCode(lines)
+        f = FormatAlignColon(f_file)
+        f.format()
+        result = f.formatted_lines()
+
         expec = [
             " !&<\n",
             " integer(8), intent(in) :: asldk\n",
@@ -96,7 +100,7 @@ class TestFormatAlignColor(unittest.TestCase):
             "   integer(2)     :: flag2  ! and have some weird code\n",
             "   integer(2)     :: flag3  ! and have some weird code\n",
         ]
-        self.assertListEqual(expec, _align_colons(lines))
+        self.assertListEqual(expec, result)
 
     def test_single_ignore(self):
         lines = [
